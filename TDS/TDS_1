@@ -1,0 +1,28 @@
+// Import necessary libraries
+#include <WiFi.h>
+#include <EEPROM.h>
+
+// Define TDS sensor pin connections
+const int tdsSensorPin = 34; // Analog input pin for TDS sensor
+
+// Define calibration values (obtained from sensor datasheet or calibration process)
+const float tdsCalibrationFactor = 0.5; // adjust this value based on your sensor's calibration
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(tdsSensorPin, INPUT);
+}
+
+void loop() {
+  // Read TDS sensor value (analog input)
+  int tdsValue = analogRead(tdsSensorPin);
+
+  // Convert TDS value to ppm (parts per million)
+  float tdsPpm = (tdsValue / 1024.0) * tdsCalibrationFactor;
+
+  // Print TDS value to serial console
+  Serial.print("TDS (ppm): ");
+  Serial.println(tdsPpm);
+
+  delay(1000); // wait 1 second before taking next reading
+}
