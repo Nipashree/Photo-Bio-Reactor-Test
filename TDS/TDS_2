@@ -1,0 +1,36 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <thread>
+#include <chrono>
+
+class Bioreactor {
+public:
+    Bioreactor(float targetTDS) : targetTDS(targetTDS), currentTDS(0.0), sensorActive(true) {
+        std::srand(static_cast<unsigned int>(std::time(0))); // Seed for random number generation
+    }
+
+    float readTDSSensor() {
+        // Simulate reading the TDS value
+        currentTDS = static_cast<float>(std::rand() % 1001); // Random value between 0 and 1000
+        return currentTDS;
+    }
+
+    void adjustConditions() {
+        if (currentTDS < targetTDS) {
+            std::cout << "Increasing nutrient concentration...\n";
+            // Logic to increase nutrients
+        } else if (currentTDS > targetTDS) {
+            std::cout << "Decreasing nutrient concentration...\n";
+            // Logic to decrease nutrients
+        } else {
+            std::cout << "TDS is at the desired level.\n";
+        }
+    }
+
+    void monitor() {
+        while (sensorActive) {
+            float currentTDS = readTDSSensor();
+            std::cout << "Current TDS: " << currentTDS << " mg/L\n";
+            adjustConditions();
+            std::this_thread::sleep_for(std::chrono::seconds(5)); // Adjust monitoring frequency 
